@@ -1,6 +1,9 @@
 package com.example.OEDR;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.util.Patterns;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,33 +11,87 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class signup extends AppCompatActivity {
-    DatabaseReference reff;
+    DatabaseReference reff1,reff,temp;
+    long id;
     user user1;
     boolean flag=false;
     TextView error4;
-    public void register(View view ) {
-    EditText fname, lname, email, password, cpassword;
-    fname = findViewById(R.id.editText2);
-    lname = findViewById(R.id.editText3);
-    email = findViewById(R.id.editText4);
-    password = findViewById(R.id.editText5);
-    cpassword = findViewById(R.id.editText6);
-    reff = FirebaseDatabase.getInstance().getReference().child("User");
-    String s2, s3, s4, s5, s6;
-    // s2=fname.toString().trim();
-    s2 = fname.getText().toString();
-    String nullstring = "";
-    s3 = lname.getText().toString().trim();
-    s4 = email.getText().toString().trim();
-    s5 = password.getText().toString().trim();
-    s6 = cpassword.getText().toString().trim();
-    String c;
 
-    if (s2.compareTo(nullstring)!=0) {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+        setContentView(R.layout.activity_signup);
+        Log.e(String.valueOf(id),"at create");
+        reff = FirebaseDatabase.getInstance().getReference();
+        reff1 = reff.child("id");
+        temp = reff.child("user");
+        temp.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    id = dataSnapshot.getChildrenCount();
+                }
+                id += 1;
+                Log.e(String.valueOf(id),"inner id");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void register(View view ) {
+        EditText fname, lname, email, password, cpassword;
+        fname = findViewById(R.id.editText2);
+        lname = findViewById(R.id.editText3);
+        email = findViewById(R.id.editText4);
+        password = findViewById(R.id.editText5);
+        cpassword = findViewById(R.id.editText6);
+        String s2, s3, s4, s5, s6;
+        // s2=fname.toString().trim();
+        s2 = fname.getText().toString();
+        String nullstring = "";
+        s3 = lname.getText().toString().trim();
+        s4 = email.getText().toString().trim();
+        s5 = password.getText().toString().trim();
+        s6 = cpassword.getText().toString().trim();
+
+        if (flag == false) {
+            user1 = new user();
+            user1.setFname(s2);
+            user1.setLname(s3);
+            user1.setEmail(s4);
+            user1.setPassword(s5);
+            user1.setCpassword(s6);
+
+            Log.e(String.valueOf(id),"outer id");
+            reff1.setValue(id);
+
+            temp.child(String.valueOf(id)).setValue(user1);
+
+            // Intent intent = new Intent(signup.this, login.class);
+            //startActivity(intent);
+        }
+
+
+
+        String c;
+    /*if (s2.compareTo(nullstring)!=0) {
         fname.setBackgroundResource(R.drawable.default_edittext);
         flag = false;
         TextView error2 =findViewById(R.id.error2);
@@ -67,7 +124,6 @@ public class signup extends AppCompatActivity {
         if(Patterns.EMAIL_ADDRESS.matcher(s4).matches()){
             flag = false;
             email.setBackgroundResource(R.drawable.default_edittext);
-
         }
         else{
             flag = true;
@@ -75,9 +131,9 @@ public class signup extends AppCompatActivity {
             c="enter a valid email address";
             error4 =findViewById(R.id.error4);
             error4.setText(c);
-
         }
-    } else {
+    }
+    else {
         email.setBackgroundResource(R.drawable.warning_edittext);
         flag = true;
         c="enter email address";
@@ -126,29 +182,7 @@ public class signup extends AppCompatActivity {
         c="enter a valid password";
         TextView error6 =findViewById(R.id.error6);
         error6.setText(c);
-    }
-    if (flag == false) {
-        user1 = new user();
-        user1.setFname(s2);
-        user1.setLname(s3);
-        user1.setEmail(s4);
-        user1.setPassword(s5);
-        user1.setCpassword(s6);
-        reff.push().setValue(user1);
-        Toast.makeText(signup.this,s2,Toast.LENGTH_LONG).show();
+    }*/
 
-        Intent intent = new Intent(signup.this, login.class);
-        startActivity(intent);
-    }
-}
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try
-        {
-            this.getSupportActionBar().hide();
-        }
-        catch (NullPointerException e){}
-        setContentView(R.layout.activity_signup);
     }
 }
