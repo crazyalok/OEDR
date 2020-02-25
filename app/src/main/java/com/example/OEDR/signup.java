@@ -94,7 +94,7 @@ public class signup extends AppCompatActivity {
         password.setBackgroundResource(R.drawable.warning_edittext);
         flag = true;
         c="enter a valid password";
-        TextView error6 =findViewById(R.id.error6);
+        TextView error6 =findViewById(R.id.error5);
         error6.setText(c);
     }
     if (s6.compareTo(nullstring)!=0) {
