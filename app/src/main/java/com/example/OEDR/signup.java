@@ -63,13 +63,106 @@ public class signup extends AppCompatActivity {
         password = findViewById(R.id.editText5);
         cpassword = findViewById(R.id.editText6);
         String s2, s3, s4, s5, s6;
-        // s2=fname.toString().trim();
+        s2=fname.toString().trim();
         s2 = fname.getText().toString();
         String nullstring = "";
         s3 = lname.getText().toString().trim();
         s4 = email.getText().toString().trim();
         s5 = password.getText().toString().trim();
         s6 = cpassword.getText().toString().trim();
+        String c;
+        if (s2.compareTo(nullstring)!=0) {
+            fname.setBackgroundResource(R.drawable.default_edittext);
+            flag = false;
+            TextView error2 =findViewById(R.id.error2);
+            error2.setText("");
+        } else {
+            fname.setBackgroundResource(R.drawable.warning_edittext);
+            flag = true;
+            c="enter a valid name";
+            TextView error2 =findViewById(R.id.error2);
+            error2.setText(c);
+        }
+        if (s3.compareTo(nullstring)!=0) {
+            lname.setBackgroundResource(R.drawable.default_edittext);
+            flag = false;
+            TextView error3 =findViewById(R.id.error3);
+            error3.setText("");
+        } else {
+            lname.setBackgroundResource(R.drawable.warning_edittext);
+            flag = true;
+            c="enter a valid name";
+            TextView error3 =findViewById(R.id.error3);
+            error3.setText(c);
+        }
+        if (s4.compareTo(nullstring)!=0) {
+            email.setBackgroundResource(R.drawable.default_edittext);
+            flag = false;
+            c="";
+            error4 =findViewById(R.id.error4);
+            error4.setText(c);
+            if(Patterns.EMAIL_ADDRESS.matcher(s4).matches()){
+                flag = false;
+                email.setBackgroundResource(R.drawable.default_edittext);
+            }
+            else{
+                flag = true;
+                email.setBackgroundResource(R.drawable.warning_edittext);
+                c="enter a valid email address";
+                error4 =findViewById(R.id.error4);
+                error4.setText(c);
+            }
+        }
+        else {
+            email.setBackgroundResource(R.drawable.warning_edittext);
+            flag = true;
+            c="enter email address";
+            error4 =findViewById(R.id.error4);
+            error4.setText(c);
+        }
+        if (s5.compareTo(nullstring)!=0) {
+            password.setBackgroundResource(R.drawable.default_edittext);
+            flag = false;
+            c="";
+            TextView error5 =findViewById(R.id.error5);
+            error5.setText(c);
+        } else {
+            password.setBackgroundResource(R.drawable.warning_edittext);
+            flag = true;
+            c="enter a valid password";
+            TextView error6 =findViewById(R.id.error6);
+            error6.setText(c);
+        }
+        if (s6.compareTo(nullstring)!=0) {
+            cpassword.setBackgroundResource(R.drawable.default_edittext);
+            flag = false;
+            c="";
+            TextView error6 =findViewById(R.id.error6);
+            error6.setText(c);
+        } else {
+            cpassword.setBackgroundResource(R.drawable.warning_edittext);
+            flag = true;
+            c="enter a valid password";
+            TextView error6 =findViewById(R.id.error6);
+            error6.setText(c);
+        }
+        if(s5.compareTo(s6)==0 && s5.length() >=6){
+            flag = false;
+            cpassword.setBackgroundResource(R.drawable.default_edittext);
+            password.setBackgroundResource(R.drawable.default_edittext);
+            c="";
+            TextView error6 =findViewById(R.id.error6);
+            error6.setText(c);
+        }
+        else
+        {
+            password.setBackgroundResource(R.drawable.warning_edittext);
+            cpassword.setBackgroundResource(R.drawable.warning_edittext);
+            flag = true;
+            c="enter a valid password";
+            TextView error6 =findViewById(R.id.error6);
+            error6.setText(c);
+        }
 
         if (flag == false) {
             user1 = new user();
@@ -84,105 +177,13 @@ public class signup extends AppCompatActivity {
 
             temp.child(String.valueOf(id)).setValue(user1);
 
-            // Intent intent = new Intent(signup.this, login.class);
-            //startActivity(intent);
+            Intent intent = new Intent(signup.this, login.class);
+            startActivity(intent);
         }
 
 
 
-        String c;
-    /*if (s2.compareTo(nullstring)!=0) {
-        fname.setBackgroundResource(R.drawable.default_edittext);
-        flag = false;
-        TextView error2 =findViewById(R.id.error2);
-        error2.setText("");
-    } else {
-        fname.setBackgroundResource(R.drawable.warning_edittext);
-        flag = true;
-        c="enter a valid name";
-        TextView error2 =findViewById(R.id.error2);
-        error2.setText(c);
-    }
-    if (s3.compareTo(nullstring)!=0) {
-        lname.setBackgroundResource(R.drawable.default_edittext);
-        flag = false;
-        TextView error3 =findViewById(R.id.error3);
-        error3.setText("");
-    } else {
-        lname.setBackgroundResource(R.drawable.warning_edittext);
-        flag = true;
-        c="enter a valid name";
-        TextView error3 =findViewById(R.id.error3);
-        error3.setText(c);
-    }
-    if (s4.compareTo(nullstring)!=0) {
-        email.setBackgroundResource(R.drawable.default_edittext);
-        flag = false;
-        c="";
-        error4 =findViewById(R.id.error4);
-        error4.setText(c);
-        if(Patterns.EMAIL_ADDRESS.matcher(s4).matches()){
-            flag = false;
-            email.setBackgroundResource(R.drawable.default_edittext);
-        }
-        else{
-            flag = true;
-            email.setBackgroundResource(R.drawable.warning_edittext);
-            c="enter a valid email address";
-            error4 =findViewById(R.id.error4);
-            error4.setText(c);
-        }
-    }
-    else {
-        email.setBackgroundResource(R.drawable.warning_edittext);
-        flag = true;
-        c="enter email address";
-        error4 =findViewById(R.id.error4);
-        error4.setText(c);
-    }
-    if (s5.compareTo(nullstring)!=0) {
-        password.setBackgroundResource(R.drawable.default_edittext);
-        flag = false;
-        c="";
-        TextView error5 =findViewById(R.id.error5);
-        error5.setText(c);
-    } else {
-        password.setBackgroundResource(R.drawable.warning_edittext);
-        flag = true;
-        c="enter a valid password";
-        TextView error6 =findViewById(R.id.error6);
-        error6.setText(c);
-    }
-    if (s6.compareTo(nullstring)!=0) {
-        cpassword.setBackgroundResource(R.drawable.default_edittext);
-        flag = false;
-        c="";
-        TextView error6 =findViewById(R.id.error6);
-        error6.setText(c);
-    } else {
-        cpassword.setBackgroundResource(R.drawable.warning_edittext);
-        flag = true;
-        c="enter a valid password";
-        TextView error6 =findViewById(R.id.error6);
-        error6.setText(c);
-    }
-    if(s5.compareTo(s6)==0 && s5.length() > 6){
-        flag = false;
-        cpassword.setBackgroundResource(R.drawable.default_edittext);
-        password.setBackgroundResource(R.drawable.default_edittext);
-        c="";
-        TextView error6 =findViewById(R.id.error6);
-        error6.setText(c);
-    }
-    else
-    {
-        password.setBackgroundResource(R.drawable.warning_edittext);
-        cpassword.setBackgroundResource(R.drawable.warning_edittext);
-        flag = true;
-        c="enter a valid password";
-        TextView error6 =findViewById(R.id.error6);
-        error6.setText(c);
-    }*/
+
 
     }
 }
